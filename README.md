@@ -6,24 +6,24 @@ Raspberry Pi4における本アプリケーションのセットアップ手順�
 
 1. Raspberry Pi4にRaspberryPi OSをインストールする
 
-2. LXTerminalを開き、以下のコマンドを実行する。
+2. LXTerminalを開き、以下のコマンドを実行する
 ```
 sudo apt update
 sudo apt upgrade
 sudo apt install python3-tk
 ```
 
-3. requirements.txtに書かれているライブラリをインストールする。
+3. requirements.txtに書かれているライブラリをインストールする
 ```
 pip3 install -r "requirements.txt"
 ```
 
-4. tflite_runtimeをインストールする。
+4. tflite_runtimeをインストールする
 ```
 pip3 install --extra-index-url https://google-coral.github.io/py-repo/ tflite_runtime
 ```
 
-アプリケーションを実行する。
+5. アプリケーションを実行する
 ```
 python3 guiapp.py
 ```
