@@ -1,0 +1,6 @@
+numpy
+pyserial
+pillow
+scipy
+pysinewave
+opencv-python
