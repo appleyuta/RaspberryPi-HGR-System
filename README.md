@@ -39,25 +39,21 @@ python3 guiapp.py
 ## デモ
 Raspberry Pi4を用いた家電操作実行デモ
 
-テレビ
-![tv](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/tv_demo.gif)
+テレビ  
+![tv](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/tv_demo.gif)  
 [音声付き実行デモ(テレビ)](https://drive.google.com/file/d/1s1qNGif82lDRxwMHlbF_nLyt1CB9UhEN/view?usp=sharing)
 
-ラジオ
-![radio](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/radio_demo.gif)
+ラジオ  
+![radio](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/radio_demo.gif)  
 [音声付き実行デモ(ラジオ)](https://drive.google.com/file/d/17_MrWGOTZl4V6-CBKR9baaDONod8nfAz/view?usp=sharing)
 
-
-照明
-![light](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/light_demo.gif)
+照明  
+![light](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/light_demo.gif)  
 [音声付き実行デモ(照明)](https://drive.google.com/file/d/1AMNmwWAQx4k3uAjHc9ooJVMLYlVAi2QY/view?usp=sharing)
 
-
-エアコン
-![aircon](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/aircon_demo.gif)
+エアコン  
+![aircon](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/aircon_demo.gif)  
 [音声付き実行デモ(エアコン)](https://drive.google.com/file/d/1Vg5cv_YjNdHtDIUxkVzP2FJbDGfUzujT/view?usp=sharing)
 
-
-音声付きのデモ動画は
 
 実行デモのように家電を操作するためには、irMagician(大宮技研)をRaspberry Pi4に接続する必要がある。
