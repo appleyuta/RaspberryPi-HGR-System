@@ -13,7 +13,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt install python3-tk python3-pil.imagetk -y
 sudo apt install libportaudio2 libasound2-dev -y
-sudo apt install libatlas-dev -y
+sudo apt install libatlas-base-dev -y
 ```
 
 3. pip3を最新版にアップデートする
