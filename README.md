@@ -39,13 +39,13 @@ python3 guiapp.py
 ## デモ
 Raspberry Pi4を用いた家電操作実行デモ
 
-![tv](https://github.com/appleyuta/RaspberryPi-HGR-System/tree/main/demo/tv_demo.gif)
+![tv](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/tv_demo.gif)
 
-![radio](https://github.com/appleyuta/RaspberryPi-HGR-System/tree/main/demo/radio_demo.gif)
+![radio](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/radio_demo.gif)
 
-![light](https://github.com/appleyuta/RaspberryPi-HGR-System/tree/main/demo/light_demo.gif)
+![light](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/light_demo.gif)
 
-![aircon](https://github.com/appleyuta/RaspberryPi-HGR-System/tree/main/demo/aircon_demo.gif)
+![aircon](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/aircon_demo.gif)
 
 
 実行デモのように家電を操作するためには、irMagician(大宮技研)をRaspberry Pi4に接続する必要がある。
