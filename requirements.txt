@@ -1,6 +1,6 @@
 numpy
 pyserial
 pillow
-scipy
+scipy==1.4.1
 pysinewave
 opencv-python
