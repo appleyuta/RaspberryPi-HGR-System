@@ -5,7 +5,8 @@ PC版は[こちら](https://github.com/appleyuta/Hand-Gesture-Recognition)。
 ## セットアップ
 Raspberry Pi4における本アプリケーションのセットアップ手順を説明する。
 
-1. Raspberry Pi4にRaspberryPi OSをインストールする
+1. Raspberry Pi4にRaspberryPi OSをインストールする  
+システムを快適に利用するには64bit版OSのインストールを推奨します。
 
 2. LXTerminalを開き、以下のコマンドを実行する
 ```
@@ -57,3 +58,42 @@ Raspberry Pi4を用いた家電操作実行デモ
 
 
 実行デモのように家電を操作するためには、irMagician(大宮技研)をRaspberry Pi4に接続する必要がある。
+
+
+## 使用したネットワーク
+このアプリケーションで使用したネットワークについて解説する。  
+YOLOv3をベースにRaspberry Piで高速で実行できるようにアーキテクチャを改善した。  
+YOLOv3は物体検出に有用となる特徴量を抽出するBackboneと、Backboneで得られた特徴量を基に物体を検出するHeadに分けられる。
+
+YOLOv3の公式実装は以下のようになる。  
+Backbone : Darknet53  
+Head : Standard Convolution
+
+これらを以下のように変更したネットワークを提案する。  
+Backbone : **MobileNetV3-Small**  
+Head : **Depthwise Separable Convolution**
+
+また公式実装の入力サイズは416x416であるが、これを224x224に変更した。
+
+提案したネットワークを**M**obile**N**etV3-**S**mall **Y**OLOv3を省略し**MNSY**と呼称する。
+
+## MNSYの有効性
+MNSYと代表的なネットワークの比較を以下に示す。  
+mAPに関してはCOCO mAPを使用し、学習データは[Creative Senz3d Dataset](https://lttm.dei.unipd.it/downloads/gesture/)及び自前で集めた画像、合計33,000枚を用いた。tensorflowでモデルを学習させ、Tensorflow Liteに変換してRaspberry Pi上で実行を行った。
+
+|Model|Params|Model Size|mAP|Inference Speed|
+|:---|:---|:---|:---|:---|
+|MNSY|2.4M|4.58MB|80.86|14.25fps|
+|Tiny-YOLOv4|5.9M|11.2MB|81.14|4.51fps|
+|Tiny-YOLOv3|8.7M|16.5MB|80.21|4.38fps|
+|EfficientDet-D0|3.9M|16.3MB|**85.06**|0.79fps|
+|MobileNetV3-Small|**1.3M**|**2.57MB**|42.56|**17.63fps**|
+|MobileNetV2|3.0M|5.68MB|62.19|11.89fps|
+|MobileNet|3.8M|7.29MB|57.53|10.77fps|
+|NasNetMobile|4.9M|9.56MB|61.87|6.40fps|
+
+Tiny-YOLOv4はMNSYと比較して精度が僅か0.28%だけ高くなっているが、パラメータ数、モデルサイズ、速度においてはMNSYが大きく上回っている。  
+MNSYはパラーメータ数、モデルサイズ、精度、速度のすべてでTiny-YOLOv3を上回っている。  
+EfficientDet-D0はMNSYと比べて精度が4.2%高くなっているが、実行速度が著しく低下している。  
+MobileNetV3-SmallはMNSYと比べて高速で実行可能であるが、精度が著しく低下している。  
+以上のことから、MNSYは速度と精度の両立を実現したネットワークであり、様々な用途での応用が期待できる。
