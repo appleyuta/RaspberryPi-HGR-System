@@ -72,11 +72,11 @@ Raspberry Pi4を用いた家電操作実行デモ
 [音声付き実行デモ(テレビ)](https://drive.google.com/file/d/1s1qNGif82lDRxwMHlbF_nLyt1CB9UhEN/view?usp=sharing)
 
 ラジオ  
-![radio](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/radio_demo.gif)  
+![radio](https://raw.github.com/wiki/appleyuta/RaspberryPi-HGR-System/demo/radio_demo.gif)  
 [音声付き実行デモ(ラジオ)](https://drive.google.com/file/d/17_MrWGOTZl4V6-CBKR9baaDONod8nfAz/view?usp=sharing)
 
 照明  
-![light](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/light_demo.gif)  
+![light](https://raw.github.com/wiki/appleyuta/RaspberryPi-HGR-System/demo/light_demo.gif)  
 [音声付き実行デモ(照明)](https://drive.google.com/file/d/1AMNmwWAQx4k3uAjHc9ooJVMLYlVAi2QY/view?usp=sharing)
 
 エアコン  
