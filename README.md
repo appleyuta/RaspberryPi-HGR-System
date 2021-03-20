@@ -5,17 +5,19 @@ PC版は[こちら](https://github.com/appleyuta/Hand-Gesture-Recognition)。
 ## 使用するハードウェア
 本システムで必須となるハードウェアは以下の3つである。
 
-1. Raspberry Pi4 (4GB,8GBモデル推奨)
+1. **Raspberry Pi4** (4GB,8GBモデル推奨)
 
-2. Raspberry Pi Camera Module (USBカメラではシステムの動作を保証できません)
+2. **Raspberry Pi Camera Module** (USBカメラではシステムの動作を保証できません)
 
-3. irMagician (赤外線信号による家電操作のため)
+3. **irMagician** (赤外線信号による家電操作のため)
 
 上記に加えて、以下の機材のいずれかが必要です。
 
-4. Raspberry Piに接続するモニター (ジェスチャ画面を見て操作する場合)
+4. Raspberry Piに接続する**モニター** (ジェスチャ画面を見て操作する場合)  
+VNC接続を用いてRaspberry Piに接続し、本システムを使用すると動作が安定しません。  
+Raspberry Piをモニターに直接接続して使用してください。
 
-5. Raspberry Piに接続するスピーカー (音声サポートを使用して操作する場合)
+5. Raspberry Piに接続する**スピーカー** (音声サポートを使用して操作する場合)
 
 ## Raspberry Pi Camera Moduleの設定
 
@@ -106,7 +108,8 @@ Head : **Depthwise Separable Convolution**
 
 ## MNSYの有効性
 MNSYと代表的なネットワークの比較を以下に示す。  
-mAPに関してはCOCO mAPを使用し、学習データは[Creative Senz3d Dataset](https://lttm.dei.unipd.it/downloads/gesture/)及び自前で集めた画像、合計33,000枚を用いた。Tensorflowでモデルを学習させ、Tensorflow Liteに変換してRaspberry Pi上で実行を行った。
+mAPに関してはCOCO mAPを使用し、学習データは[Creative Senz3d Dataset](https://lttm.dei.unipd.it/downloads/gesture/)及び自前で集めた画像、合計33,000枚を用いた。Tensorflowでモデルを学習させ、Tensorflow Liteに変換してRaspberry Pi上で実行を行った。  
+MobileNetV3-Small,MobileNetV2,MobileNet,NasNetMobileはClassification with Localizationを用いて物体位置検出を行った。
 
 |Model|Params|Model Size|mAP|Inference Speed|
 |:---|:---|:---|:---|:---|
