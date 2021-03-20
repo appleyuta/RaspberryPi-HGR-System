@@ -80,7 +80,7 @@ Raspberry Pi4を用いた家電操作実行デモ
 [音声付き実行デモ(照明)](https://drive.google.com/file/d/1AMNmwWAQx4k3uAjHc9ooJVMLYlVAi2QY/view?usp=sharing)
 
 エアコン  
-![aircon](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/aircon_demo.gif)  
+![aircon](https://raw.github.com/wiki/appleyuta/RaspberryPi-HGR-System/demo/aircon_demo.gif)  
 [音声付き実行デモ(エアコン)](https://drive.google.com/file/d/1Vg5cv_YjNdHtDIUxkVzP2FJbDGfUzujT/view?usp=sharing)
 
 
