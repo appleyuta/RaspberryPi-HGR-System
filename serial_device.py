@@ -1,6 +1,8 @@
 import platform
 import serial
 from serial.tools import list_ports
+import time
+import subprocess
 
 pf = platform.system()
 ir_serial = None
@@ -33,18 +35,32 @@ elif pf == "Darwin":
         print(e)
 elif pf == "Linux":
     print("on Linux")
-    ir_serial = serial.Serial()
-    ir_serial.baudrate = 9600
-    devices = list_ports.comports()
-    for device in devices:
-        print(device[1])
-        print("irM" in device[1])
-        if "irM" in device[1]:
-            ir_serial.port = device[0]
-    try:
-        ir_serial.open()
-    except Exception as e:
-        ir_serial = None
-        print(e)
+    #subprocess.Popen("exec python3 dummy.py",shell=True)
+    #time.sleep(3.0)
+    """p = subprocess.Popen("exec python3",shell=True)
+    time.sleep(1.0)
+    p.kill()"""
+    for i in range(2):
+        ir_serial = serial.Serial()
+        ir_serial.baudrate = 9600
+        devices = list_ports.comports()
+        for device in devices:
+            print(device[1])
+            print("irM" in device[1])
+            if "irM" in device[1]:
+                ir_serial.port = device[0]
+        try:
+            ir_serial.open()
+        except Exception as e:
+            ir_serial = None
+            print(e)
+        if i == 0:
+            print("Capturing IR...")
+            ir_serial.write("c\r\n".encode())
+            time.sleep(3.0)
+            ir_serial.write("l,0\r\n".encode())
+            ir_serial.write("r,0\r\n".encode())
+            #time.sleep(1.0)
+            ir_serial.close() 
 
 print(ir_serial)
