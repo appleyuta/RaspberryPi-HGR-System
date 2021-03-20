@@ -2,6 +2,33 @@
 Raspberry Pi4を用いたジェスチャ家電操作システムです。
 PC版は[こちら](https://github.com/appleyuta/Hand-Gesture-Recognition)。
 
+## 使用するハードウェア
+本システムで必須となるハードウェアは以下の3つである。
+
+1. Raspberry Pi4 (4GB,8GBモデル推奨)
+
+2. Raspberry Pi Camera Module (USBカメラではシステムの動作を保証できません)
+
+3. irMagician (赤外線信号による家電操作のため)
+
+上記に加えて、以下の機材のいずれかが必要です。
+
+4. Raspberry Piに接続するモニター (ジェスチャ画面を見て操作する場合)
+
+5. Raspberry Piに接続するスピーカー (音声サポートを使用して操作する場合)
+
+## Raspberry Pi Camera Moduleの設定
+
+1. Raspberry Piのメニューボタンから設定を選択
+
+2. Raspberry Piの設定を選択
+
+3. インターフェイスを選択
+
+4. カメラを有効にしてOKボタンを押す
+
+5. 再起動を要求されるので再起動する
+
 ## セットアップ
 Raspberry Pi4における本アプリケーションのセットアップ手順を説明する。
 
@@ -41,7 +68,7 @@ python3 guiapp.py
 Raspberry Pi4を用いた家電操作実行デモ
 
 テレビ  
-![tv](https://github.com/appleyuta/RaspberryPi-HGR-System/blob/main/demo/tv_demo.gif)  
+![tv](https://raw.github.com/wiki/appleyuta/RaspberryPi-HGR-System/demo/tv_demo.gif)  
 [音声付き実行デモ(テレビ)](https://drive.google.com/file/d/1s1qNGif82lDRxwMHlbF_nLyt1CB9UhEN/view?usp=sharing)
 
 ラジオ  
@@ -79,7 +106,7 @@ Head : **Depthwise Separable Convolution**
 
 ## MNSYの有効性
 MNSYと代表的なネットワークの比較を以下に示す。  
-mAPに関してはCOCO mAPを使用し、学習データは[Creative Senz3d Dataset](https://lttm.dei.unipd.it/downloads/gesture/)及び自前で集めた画像、合計33,000枚を用いた。tensorflowでモデルを学習させ、Tensorflow Liteに変換してRaspberry Pi上で実行を行った。
+mAPに関してはCOCO mAPを使用し、学習データは[Creative Senz3d Dataset](https://lttm.dei.unipd.it/downloads/gesture/)及び自前で集めた画像、合計33,000枚を用いた。Tensorflowでモデルを学習させ、Tensorflow Liteに変換してRaspberry Pi上で実行を行った。
 
 |Model|Params|Model Size|mAP|Inference Speed|
 |:---|:---|:---|:---|:---|
