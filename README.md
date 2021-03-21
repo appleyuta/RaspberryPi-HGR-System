@@ -27,7 +27,11 @@ Raspberry Piをモニターに直接接続して使用してください。
 
 3. インターフェイスを選択
 
+![setting_1](https://raw.github.com/wiki/appleyuta/RaspberryPi-HGR-System/image/camera_setting1.png)
+
 4. カメラを有効にしてOKボタンを押す
+
+![setting_2](https://raw.github.com/wiki/appleyuta/RaspberryPi-HGR-System/image/camera_setting2.png)
 
 5. 再起動を要求されるので再起動する
 
