@@ -32,20 +32,13 @@ sinewave.output_stream = sd.OutputStream(channels=1,callback= lambda *args: call
 
 def sineplay(sinewave,freq):
     try:
-        #cur_time = time.time()
-        #print((cur_time - before_time) > 1)
-        #sinewave.set_volume(0)
         sinewave.set_frequency(freq)
-        # Turn the sine wave on.
         sinewave.play()
     except Exception as e:
         print(e)
 
 
 def sinestop(sinewave):
-    #sinewave.set_frequency(0)
-    #sinewave.set_volume(-1000)
-    #time.sleep(0.05)
     sinewave.stop()
 
 
@@ -132,12 +125,11 @@ class YOLO:
         output2 = self.interpreter.tensor(output_details[1]['index'])
         output3 = self.interpreter.tensor(output_details[2]['index'])
 
-        #time_stamp = time.time()
+        
         cap = cv2.VideoCapture(0)
         time_stamp = 0
         start_flag_x = 0
         start_flag_y = 0
-        #end_flag_y = 0
         speed_count = 0#仮
         speed_sum = 0#仮
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
@@ -147,10 +139,8 @@ class YOLO:
         #cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('H', '2', '6', '4'))
         cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         while cap.isOpened():
-            #time.sleep(0.1)
             t = 0
             start_time = time.time()
-            #time.sleep(0.03)
             ret, frame = cap.read()
             #左右反転(鏡)
             frame = cv2.flip(frame,1)
@@ -160,8 +150,6 @@ class YOLO:
             #STEP-6
             model_n,model_w,model_h,model_c = input_details[0]['shape']
             in_frame = cv2.resize(frame, (model_w, model_h))
-            #in_frame = resize_image(frame,size=(224,224))
-            #frame  =  resize_image(frame,size=(600,600))
             in_frame = cv2.cvtColor(in_frame,cv2.COLOR_BGR2RGB)
             in_frame = cv2.normalize(in_frame,None,alpha=0,beta=1,norm_type=cv2.NORM_MINMAX,dtype=cv2.CV_32F)
             in_frame = in_frame.reshape((model_n, model_h, model_w, model_c))
@@ -172,13 +160,6 @@ class YOLO:
             current_time = time.time()
             #tは実行にかかった時間(速度計算に使用)
             t = current_time - start_time
-
-            #疑似的にラズパイ実行時の速度にする
-            """try:
-                time.sleep(0.08-t)
-            except:
-                pass
-            t = current_time - start_time + (0.08-t)"""
             
             objects = yolo3_postprocess_np([output1(),output2(),output3()],frame.shape[:-1],anchors,12,(model_h,model_w),confidence=0.35)
             speed_count += 1
@@ -193,14 +174,11 @@ class YOLO:
             velocity_x = 0
             velocity_y = 0
             sineplay_count = 0
-            #time_stamp = time.time()
             
-            #for i in range(len(objects[0])):
             if len(objects[0]) > 0:
                 i = 0
                 #(メモ)confidence=0.45,classprob=0.3
                 if objects[3][i] > 0.1:
-                    #print(objects)
                     x_center = objects[0][i][0]
                     y_center = objects[0][i][1]
                     class_id = objects[2][i]
@@ -296,8 +274,6 @@ class YOLO:
                                 self.start_point_x = None
                                 self.end_point_x = None
                             
-                            #y
-                            #if start_flag_y >= 1 and abs(velocity_y) > 300 and self.y_start2end_count == None:
                             if start_flag_y >= 1 and abs(velocity_y) > 400:
                                 self.start_point_y = (y_center,velocity_y,median_class_id)
                                 self.y_start2end_count = 0
@@ -315,7 +291,6 @@ class YOLO:
                                     sineplay(sinewave,freq)
                                     sineplay_count += 1
                             
-                            #if self.start_point_y != None and self.end_point_y == None and abs(velocity_y) < 90:
                             if self.start_point_y != None and self.end_point_y == None and self.y_start2end_count > 5 and self.cnt > 3:#abs(velocity_y) < 90:
                                 self.end_point_y = (y_center,median_class_id)
                                 self.y_start2end_count = None #初期化
@@ -355,7 +330,6 @@ class YOLO:
                                 else:
                                     self.cnt = 0
                                     
-                            #if self.cnt > (1/t)*2.5:
                             if self.cnt > 20:
                                 print(idx2label[median_class_id],"stop")
                                 self.detect_gesture_name = idx2label[median_class_id] + " stop"
@@ -375,18 +349,9 @@ class YOLO:
                         self.detected_data.pop(0)
                         self.detected_data.append([x_center,y_center,velocity_x,velocity_y,median_class_id])
                         self.detect_class = np.append(self.detect_class[1:],class_id)
-                    
-                    #print(np.average(self.detected_data,axis=0)[3])
 
-
-                    #print("速度x:",velocity_x)
-                    #print("カウント:",self.cnt)
-                    #print("フラッグx:",start_flag_x)
-                    #print("フラッグy:",start_flag_y)
             print(time.time() - time_stamp)
             if time.time() - time_stamp > 1:
-                #print("reset")
-                #time_stamp = time.time()
                 sinestop(sinewave)
                 self.start_point_x = None
                 self.start_point_y = None
@@ -435,14 +400,9 @@ class YOLO:
         output2 = self.interpreter.tensor(output_details[1]['index'])
         output3 = self.interpreter.tensor(output_details[2]['index'])
 
-        #time_stamp = time.time()
         cap = cv2.VideoCapture(0)
         time_stamp = 0
-        start_flag_x = 0
-        start_flag_y = 0
-        #end_flag_y = 0
         speed_count = 0#仮
-        speed_sum = 0#仮
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         cap_w = cap.get(3)
@@ -450,10 +410,8 @@ class YOLO:
         #cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('H', '2', '6', '4'))
         cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         while cap.isOpened():
-            #time.sleep(0.1)
             t = 0
             start_time = time.time()
-            #time.sleep(0.03)
             ret, frame = cap.read()
             #左右反転(鏡)
             frame = cv2.flip(frame,1)
@@ -463,8 +421,6 @@ class YOLO:
             #STEP-6
             model_n,model_w,model_h,model_c = input_details[0]['shape']
             in_frame = cv2.resize(frame, (model_w, model_h))
-            #in_frame = resize_image(frame,size=(224,224))
-            #frame  =  resize_image(frame,size=(600,600))
             in_frame = cv2.cvtColor(in_frame,cv2.COLOR_BGR2RGB)
             in_frame = cv2.normalize(in_frame,None,alpha=0,beta=1,norm_type=cv2.NORM_MINMAX,dtype=cv2.CV_32F)
             in_frame = in_frame.reshape((model_n, model_h, model_w, model_c))
@@ -476,13 +432,6 @@ class YOLO:
             #tは実行にかかった時間(速度計算に使用)
             t = current_time - start_time
 
-            #疑似的にラズパイ実行時の速度にする
-            """try:
-                time.sleep(0.08-t)
-            except:
-                pass
-            t = current_time - start_time + (0.08-t)"""
-            
             objects = yolo3_postprocess_np([output1(),output2(),output3()],frame.shape[:-1],anchors,12,(model_h,model_w),confidence=0.45)
             speed_count += 1
             speed_sum += t
@@ -496,14 +445,11 @@ class YOLO:
             velocity_x = 0
             velocity_y = 0
             sineplay_count = 0
-            #time_stamp = time.time()
             
-            #for i in range(len(objects[0])):
             if len(objects[0]) > 0:
                 i = 0
                 #(メモ)confidence=0.45,classprob=0.3
                 if objects[3][i] > 0.1:
-                    #print(objects)
                     x_center = objects[0][i][0]
                     y_center = objects[0][i][1]
                     class_id = objects[2][i]
@@ -519,8 +465,7 @@ class YOLO:
                             #速度を計算
                             velocity_x = (self.before_data[0]-x_center)/t
                             velocity_y = (self.before_data[1]-y_center)/t
-                            #print(velocity_y)
-                        
+                            
                         if self.detect_gesture_name == "":
                             pass
                         #現在のデータを過去のデータとして保持
@@ -535,12 +480,9 @@ class YOLO:
                         self.detected_data.append([x_center,y_center,velocity_x,velocity_y,median_class_id])
                         self.detect_class = np.append(self.detect_class[1:],class_id)
                     
-                    #print(np.average(self.detected_data,axis=0)[3])
 
             print(time.time() - time_stamp)
             if time.time() - time_stamp > 1:
-                #print("reset")
-                #time_stamp = time.time()
                 sinestop(sinewave)
                 self.start_point_x = None
                 self.start_point_y = None
@@ -556,7 +498,6 @@ class YOLO:
                 self.detect_gesture_name = ""
                 self.frame_counter = 0
 
-            #frame = cv2.putText(frame,str(round(1/t,1))+"fps",(30,40),cv2.FONT_HERSHEY_PLAIN,3,(0,0,255),3)
             frame = cv2.putText(frame,self.detect_gesture_name,(0,int(cap_h//10)),cv2.FONT_HERSHEY_PLAIN,cap_h//130,(0,0,255),3)            
 
             print("呼び出し回数:",sineplay_count)
@@ -605,7 +546,6 @@ class YOLO:
 
         postScale = data[2]
         ir_serial.write(("k,%d\r\n" % postScale).encode())
-        #time.sleep(1.0)
         msg = ir_serial.readline()
     
         for n in range(recNumber):

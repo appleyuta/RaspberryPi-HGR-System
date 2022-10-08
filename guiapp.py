@@ -26,7 +26,6 @@ class GUIAPP(tk.Tk):
         self.style = ttk.Style()
         self.style.configure("Treeview",font=("",13))
         self.style.configure("Treeview.Heading",font=("",13))
-        #self.s.configure("Select.TButton",background='#87cefa',foreground='red')
         self.s.configure("Select.TButton",background='#87cefa',foreground='red',font=("",12,"bold"))
         self.start_frame = StartFrame(self)
         self.start_frame.pack()
@@ -37,7 +36,6 @@ class GUIAPP(tk.Tk):
 
 if __name__ == "__main__":
     app = GUIAPP()
-    #app.tk.call('tk','scaling',2.0)
     app.GUIStart()
     if ir_serial != None:
         ir_serial.write("r,0\r\n".encode())

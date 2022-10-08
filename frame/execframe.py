@@ -75,7 +75,8 @@ class FurnitureFrame(tk.Frame):
         self.tree_update()
         
     def tree_update(self):
-        self.master.tree.delete((*self.master.tree.get_children()))
+        for del_elem in self.master.tree.get_children():
+            self.master.tree.delete(del_elem)
         dbpath = "gesture_db.sqlite"
         connection = sqlite3.connect(dbpath)
         cursor = connection.cursor()
@@ -105,16 +106,6 @@ class ExecuteFrame(tk.Frame):
         
         self.button = tk.Button(self,text="Stop",font=font.Font(size=26),command=self.Stop)
         
-
-        """self.s2 = ttk.Style()
-        self.s2.configure("Release.TButton",font=("",13))
-        self.s = ttk.Style()
-        self.s.theme_use('default')
-        self.s.configure("Select.TButton",background='#87cefa',foreground='red',font=("",12,"bold"))
-        self.style = ttk.Style()
-        self.style.configure("Treeview",font=("",13))
-        self.style.configure("Treeview.Heading",font=("",13))"""
-
         self.furniture_frame = FurnitureFrame(self)
         self.furniture_frame.place(anchor=tk.CENTER,x=350,y=450)
 
@@ -133,8 +124,7 @@ class ExecuteFrame(tk.Frame):
         self.model.set_furniture(self.furniture_frame.furniture_name.get())
         self.set_config()
         self.checker = None
-        #self.Start()
-    
+        
     def create_config(self):
         config = configparser.RawConfigParser()
         section1 = "exec"

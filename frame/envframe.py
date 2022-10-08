@@ -21,8 +21,6 @@ class EnvironmentFrame(tk.Frame):
         self.select_sound_support.set(config_dict["sound_support"])
         self.yes_sound_support = tk.Radiobutton(self,text="yes",value=1,variable=self.select_sound_support,font=("",13))
         self.no_sound_support = tk.Radiobutton(self,text="no",value=0,variable=self.select_sound_support,font=("",13))
-        #self.exec_env = ttk.Combobox(self,values = ["CPU","GPU","MYRIAD"])
-        #self.exec_env.set("CPU")
         self.label.place(anchor=tk.CENTER,x=350,y=30)
         self.label_camera_view.place(anchor=tk.CENTER,x=260,y=150)
         self.yes_camera_view.place(anchor=tk.CENTER,x=460,y=150)
@@ -33,9 +31,7 @@ class EnvironmentFrame(tk.Frame):
 
         self.apply_button = tk.Button(self,text="設定を変更",font=("",26),command=self.Apply)
         self.apply_button.place(anchor=tk.CENTER,x=350,y=600)
-        #self.exec_env.grid()
         self.back_button.place(x=0,y=0)
-        #self.pack()
         self.parent = setting_f #SettingFrame
 
     def Start(self):
@@ -56,7 +52,6 @@ class EnvironmentFrame(tk.Frame):
         config_dict = {}
         config_dict["camera_view"] = config.get(section1,"camera_view")
         config_dict["sound_support"] = config.get(section1,"sound_support")
-        #config_list = [config.get(section1,"camera_view"), config.get(section1,"sound_support")]
         return config_dict
 
 

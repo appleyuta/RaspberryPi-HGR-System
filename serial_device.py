@@ -9,15 +9,16 @@ ir_serial = None
 
 if pf == "Windows":
     print("on Windows")
-    """import win32com.client
-    wmi = win32com.client.GetObject("winmgmts:")
-    for usb in wmi.InstancesOf("Win32_SerialPort"):
-        print(usb.DeviceID)
-        print(usb.Name)
-        try:
-            ir_serial = serial.Serial(usb.DeviceID, 9600, timeout = 10)
-        except Exception as e:
-            print(e)"""
+    # windowsユーザは下記コードをコメントアウト
+    # import win32com.client
+    # wmi = win32com.client.GetObject("winmgmts:")
+    # for usb in wmi.InstancesOf("Win32_SerialPort"):
+    #     print(usb.DeviceID)
+    #     print(usb.Name)
+    #     try:
+    #         ir_serial = serial.Serial(usb.DeviceID, 9600, timeout = 10)
+    #     except Exception as e:
+    #         print(e)
 elif pf == "Darwin":
     print("on Mac")
     ir_serial = serial.Serial()
@@ -35,11 +36,6 @@ elif pf == "Darwin":
         print(e)
 elif pf == "Linux":
     print("on Linux")
-    #subprocess.Popen("exec python3 dummy.py",shell=True)
-    #time.sleep(3.0)
-    """p = subprocess.Popen("exec python3",shell=True)
-    time.sleep(1.0)
-    p.kill()"""
     for i in range(2):
         ir_serial = serial.Serial()
         ir_serial.baudrate = 9600
@@ -60,7 +56,6 @@ elif pf == "Linux":
             time.sleep(3.0)
             ir_serial.write("l,0\r\n".encode())
             ir_serial.write("r,0\r\n".encode())
-            #time.sleep(1.0)
             ir_serial.close() 
 
 print(ir_serial)

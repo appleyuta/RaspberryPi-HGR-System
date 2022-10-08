@@ -52,7 +52,6 @@ class FurnitureFrame(tk.Frame):
         cursor = connection.cursor()
         if load_id == True:
             cursor.execute("SELECT id,irname FROM {} ORDER BY id".format(self.furniture_name.get()))
-            #cursor.execute("SELECT id,irname FROM sample ORDER BY id")
             res = cursor.fetchall()
             print(res)
             if res.__len__() != 0:
@@ -61,7 +60,6 @@ class FurnitureFrame(tk.Frame):
                 return [('','')]
         else:
             cursor.execute("SELECT irname FROM {} ORDER BY id".format(self.furniture_name.get()))
-            #cursor.execute("SELECT irname FROM sample ORDER BY id")
             res = cursor.fetchall()
             print(res)
             if res.__len__() != 0:
@@ -70,7 +68,6 @@ class FurnitureFrame(tk.Frame):
                 return ['']
     
     def furniture_select(self,event):
-        #print(event)
         for i,btn in enumerate(self.select_furniture_btns):
             if event.widget == btn:
                 self.furniture_name.set(self.furniture_idx2label[i])
@@ -79,34 +76,24 @@ class FurnitureFrame(tk.Frame):
         print(self.furniture_name.get())
         self.tree_update()
         self.combobox_update()
-        """self.ir_label2idx = {value:key for key,value in self.get_data(load_id=True)}
-        ir_data = tuple(self.ir_label2idx.keys())
-        self.select_ir.config(values=ir_data)
-        #self.select_ir.config(values=self.get_data(load_id=False))
-        #self.select_ir.set(self.get_data(load_id=False)[0])
-        self.select_ir.set(ir_data[0])"""
     
     def combobox_update(self):
         self.ir_label2idx = {value:key for key,value in self.get_data(load_id=True)}
         ir_data = tuple(self.ir_label2idx.keys())
         self.select_ir.config(values=ir_data)
-        #self.select_ir.config(values=self.get_data(load_id=False))
-        #self.select_ir.set(self.get_data(load_id=False)[0])
         self.select_ir.set(ir_data[0])
     
     
     def tree_update(self):
-        self.master.tree.delete((*self.master.tree.get_children()))
+        for del_elem in self.master.tree.get_children():
+            self.master.tree.delete(del_elem)
         dbpath = "gesture_db.sqlite"
         connection = sqlite3.connect(dbpath)
         cursor = connection.cursor()
         for furniture in self.furniture_idx2label.values():
             cursor.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)".format(furniture))
-        #cursor.execute("CREATE TABLE IF NOT EXISTS sample (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)")
         cursor.execute("SELECT id,irname,target_id from {} where target_id >= 0".format(self.furniture_name.get()))
-        #cursor.execute("SELECT id,irname,target_id from sample where target_id >= 0")
         res = cursor.fetchall()
-        #print(res)
         for data in res:
             class_id = data[2]//5
             move_id = data[2]%5
@@ -163,12 +150,10 @@ class ClassFrame(tk.Frame):
             btn.bind("<ButtonRelease>",self.class_select)
             btn.config(style="Release.TButton")
             btn.place(anchor=tk.CENTER,x=85+75*i,y=50)
-            #btn.place(anchor=tk.CENTER,x=str(3+2*i)+"cm",y=str(2.5)+"cm")
         for i,btn in enumerate(self.select_class_btns[6:]):
             btn.bind("<ButtonRelease>",self.class_select)
             btn.config(style="Release.TButton")
             btn.place(anchor=tk.CENTER,x=85+75*i,y=120)
-            #btn.place(anchor=tk.CENTER,x=str(3+2*i)+"cm",y=str(5)+"cm")
         self.select_zero.config(style="Select.TButton")
         self.xf.place(anchor=tk.NW,relx=0.11,rely=0.05)
         self.class_label = tk.Label(self,text="ジェスチャ選択",font=("",13))#font.Font(size=15))
@@ -208,7 +193,6 @@ class MoveFrame(tk.Frame):
             btn.bind("<ButtonRelease>",self.move_select)
             btn.config(style="Release.TButton")
             btn.place(anchor=tk.CENTER,x=95+75*i,y=50)
-            #btn.place(anchor=tk.CENTER,x=str(3+2.5*i)+"cm",y=str(7.5)+"cm")
         self.xf.place(anchor=tk.NW,relx=0.15,rely=0.05)
         self.move_label = tk.Label(self,text="動作選択",font=("",13))#font.Font(size=15))
         self.move_label.place(anchor=tk.CENTER,x=350,y=10)
@@ -253,49 +237,24 @@ class RegisterFrame(tk.Frame):
         self.style.configure("Treeview",font=("",13))
         self.style.configure("Treeview.Heading",font=("",13))
         self.label = tk.Label(self,text="ジェスチャ登録",font=font.Font(size=30))
-        #self.class_name = tk.StringVar(value="zero")
-        #self.move_name = tk.StringVar(value="stop")
-        #self.ir_name = tk.StringVar()
-        #self.cls_label2idx = {"zero":0,"one":1,"two":2,"three":3,"four":4,"five":5,"three_v2":6,"fit":7,"fox":8,"ok":9,"go":10,"little_finger":11}
-        #self.move_label2idx = {"stop":0,"up":1,"down":2,"right":3,"left":4}
-        #self.cls_idx2label = {value:key for key,value in self.cls_label2idx.items()}
-        #self.move_idx2label = {value:key for key,value in self.move_label2idx.items()}
         self.furniture_frame = FurnitureFrame(self)
         self.furniture_frame.place(anchor=tk.CENTER,x=350,y=130)
         self.class_frame = ClassFrame(self)
         self.class_frame.place(anchor=tk.CENTER,x=350,y=290)
         self.move_frame = MoveFrame(self)
-        self.move_frame.place(anchor=tk.CENTER,x=350,y=440)
+        self.move_frame.place(anchor=tk.CENTER,x=350,y=440)        
 
-        
-        """self.s2 = ttk.Style()
-        self.s2.configure("Release.TButton",font=("",13))
-        self.s = ttk.Style()
-        self.s.theme_use('default')
-        #self.s.configure("Select.TButton",background='#87cefa',foreground='red')
-        self.s.configure("Select.TButton",background='#87cefa',foreground='red',font=("",12,"bold"))"""
-        
-        #self.select_tv.config(style="Select.TButton")
-        #self.select_zero.config(style="Select.TButton")
-        #self.select_stop.config(style="Select.TButton")
-        
-
-        #self.select_ir = ttk.Combobox(self,state="readonly",textvariable=self.ir_name,values=self.get_data(load_id=False))
-        #self.select_ir.set(self.get_data(load_id=False)[0])
         self.register_button = tk.Button(self,text="登録",font=font.Font(size=26),command=self.Register)
         self.back_button = tk.Button(self,text="back",font=font.Font(size=13),command=self.Back)
         self.delete_button = tk.Button(self,text="選択した項目を削除",font=font.Font(size=13),command=self.delete)
         self.label.place(anchor=tk.CENTER,x=350,y=30)
-        #self.select_ir.place(anchor=tk.CENTER,x=350,y=160)
         self.register_button.place(anchor=tk.CENTER,x=350,y=520)
         self.back_button.place(x=0,y=0)
         self.parent = setting_f #SettingFrame
-        #print(self.ir_label2idx)
         self.furniture_frame.tree_update()
         self.tree.place(anchor=tk.CENTER,x=350,y=610)
         self.delete_button.place(anchor=tk.CENTER,x=350,y=685) 
-        #self.pack()
-    
+        
     def Start(self):
         self.furniture_frame.tree_update()
         self.furniture_frame.combobox_update()
@@ -334,10 +293,7 @@ class RegisterFrame(tk.Frame):
         try:
             for furniture in self.furniture_frame.furniture_idx2label.values():
                 cursor.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)".format(furniture))
-            #cursor.execute("CREATE TABLE IF NOT EXISTS sample (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)")
-            #cursor.execute("UPDATE sample SET target_id = null where target_id = :target_id",{"id":pkey_id,"target_id":target_id})
             cursor.execute("UPDATE {} SET target_id = null where target_id = :target_id".format(self.furniture_frame.furniture_name.get()),{"id":pkey_id,"target_id":target_id})
-            #cursor.execute("UPDATE sample SET target_id = :target_id where id = :id",{"id":pkey_id,"target_id":target_id})
             cursor.execute("UPDATE {} SET target_id = :target_id where id = :id".format(self.furniture_frame.furniture_name.get()),{"id":pkey_id,"target_id":target_id})
         except sqlite3.Error as e:
             print("sqlite3.Error occured:",e.args[0])
@@ -367,51 +323,9 @@ class RegisterFrame(tk.Frame):
                 dbpath = "gesture_db.sqlite"
                 connection = sqlite3.connect(dbpath)
                 cursor = connection.cursor()
-                #cursor.execute("UPDATE sample SET target_id = null WHERE id = "+str(values[0]))
                 cursor.execute("UPDATE {} SET target_id = null WHERE id = {}".format(self.furniture_frame.furniture_name.get(),str(values[0])))
                 connection.commit()
                 connection.close()
                 print("COMMIT!")
             messagebox.showinfo("確認","正常に削除されました")
             self.furniture_frame.tree_update()
-
-            
-    """def get_data(self,load_id=True):    
-        dbpath = "gesture_db.sqlite"
-        connection = sqlite3.connect(dbpath)
-        cursor = connection.cursor()
-        if load_id == True:
-            cursor.execute("SELECT id,irname FROM {} ORDER BY id".format(self.furniture_name.get()))
-            #cursor.execute("SELECT id,irname FROM sample ORDER BY id")
-            res = cursor.fetchall()
-            print(res)
-            if res.__len__() != 0:
-                return res
-            else:
-                return [('','')]
-        else:
-            cursor.execute("SELECT irname FROM {} ORDER BY id".format(self.furniture_name.get()))
-            #cursor.execute("SELECT irname FROM sample ORDER BY id")
-            res = cursor.fetchall()
-            print(res)
-            if res.__len__() != 0:
-                return res
-            else:
-                return ['']"""
-
-    """def tree_update(self):
-        self.tree.delete((*self.tree.get_children()))
-        dbpath = "gesture_db.sqlite"
-        connection = sqlite3.connect(dbpath)
-        cursor = connection.cursor()
-        for furniture in self.furniture_frame.furniture_idx2label.values():
-            cursor.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)".format(furniture))
-        #cursor.execute("CREATE TABLE IF NOT EXISTS sample (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)")
-        cursor.execute("SELECT id,irname,target_id from {} where target_id >= 0".format(self.furniture_frame.furniture_name.get()))
-        #cursor.execute("SELECT id,irname,target_id from sample where target_id >= 0")
-        res = cursor.fetchall()
-        #print(res)
-        for data in res:
-            class_id = data[2]//5
-            move_id = data[2]%5
-            self.tree.insert("","end",values=data[:-1]+(self.cls_idx2label[class_id],self.move_idx2label[move_id]))"""

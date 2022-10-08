@@ -27,8 +27,7 @@ class SettingFrame(tk.Frame):
         self.ir_frame = InfraredSignalRegisterFrame(setting_f=self)
         self.register_frame = RegisterFrame(setting_f=self)
         self.env_frame = EnvironmentFrame(setting_f=self)
-        #self.pack()
-    
+        
     def Start(self):
         self.pack()
         
@@ -39,17 +38,14 @@ class SettingFrame(tk.Frame):
         
     def InfraredSignalRegister(self):
         self.pack_forget()
-        #threading.Thread(target=InfraredSignalRegisterFrame,args=(self,)).start()
         threading.Thread(target=self.ir_frame.Start).start()
         
     #ジェスチャ登録画面へ移行
     def Register(self):
         self.pack_forget()
-        #threading.Thread(target=RegisterFrame,args=(self,)).start()
         threading.Thread(target=self.register_frame.Start).start()
         
     #環境設定画面へ移行
     def Environment(self):
         self.pack_forget()
-        #threading.Thread(target=EnvironmentFrame,args=(self,)).start()
         threading.Thread(target=self.env_frame.Start).start()

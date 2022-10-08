@@ -77,16 +77,6 @@ class InfraredSignalRegisterFrame(tk.Frame):
         self.furniture_label = tk.Label(self,text="家電選択",font=font.Font(size=15))
         self.furniture_label.place(anchor=tk.CENTER,x=350,y=90)
 
-        """self.s2 = ttk.Style()
-        self.s2.configure("Release.TButton",font=("",13))
-        self.s = ttk.Style()
-        self.s.theme_use('default')
-        self.style = ttk.Style()
-        self.style.configure("Treeview",font=("",13))
-        self.style.configure("Treeview.Heading",font=("",13))
-
-        #self.s.configure("Select.TButton",background='#87cefa',foreground='red')
-        self.s.configure("Select.TButton",background='#87cefa',foreground='red',font=("",12,"bold"))"""
         self.select_tv.config(style="Select.TButton")
 
         self.label2 = tk.Label(self,text="赤外線登録名",font=("",13))
@@ -110,8 +100,7 @@ class InfraredSignalRegisterFrame(tk.Frame):
         self.tree_update()
         self.tree.place(anchor=tk.CENTER,x=350,y=450)
         self.delete_button.place(anchor=tk.CENTER,x=350,y=600)
-        #self.pack()
-    
+        
     def Start(self):
         self.tree_update()
         self.pack()
@@ -148,7 +137,6 @@ class InfraredSignalRegisterFrame(tk.Frame):
         cursor = connection.cursor()
         for furniture in self.furniture_idx2label.values():
             cursor.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)".format(furniture))
-        #cursor.execute("CREATE TABLE IF NOT EXISTS sample (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)")
         cursor.execute("SELECT id,irname from {} ORDER BY id".format(self.furniture_name.get()))
         res = cursor.fetchall()
         print(res)
@@ -157,11 +145,9 @@ class InfraredSignalRegisterFrame(tk.Frame):
         for data in res:
             if name == data[1]:
                 update_id = data[0]
-                #yesno = messagebox.showinfo("確認","既に登録されている登録名です。\n重複しない登録名を入力してください。")
                 yesno = messagebox.askyesno("確認","既に登録されている登録名です。\n現在登録されている信号を上書きして赤外線を登録しますか？")
                 if not yesno:
                     return
-                #return
         newWindow = CountWindow(self)
         geo = self.master.geometry()
         geo = geo.split("+")
@@ -183,10 +169,6 @@ class InfraredSignalRegisterFrame(tk.Frame):
                 return
         if name and not "Time Out" in str(msg):
             newWindow.register_waiting()
-            """self.saveIR(name,yesno,update_id)
-            newWindow.destroy()
-            self.tree_update()"""
-            #うまくいかないかも
             try:
                 self.saveIR(name,yesno,update_id)
                 newWindow.destroy()
@@ -234,20 +216,16 @@ class InfraredSignalRegisterFrame(tk.Frame):
         for data in rawX:
             rawX_str += str(data)+","
         print(rawX_str)
-        pkey_id = 1
         dbpath = "gesture_db.sqlite"
         connection = sqlite3.connect(dbpath)
         cursor = connection.cursor()
         try:
             for furniture in self.furniture_idx2label.values():
                 cursor.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)".format(furniture))
-            #cursor.execute("CREATE TABLE IF NOT EXISTS sample (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)")
             if yesno:
-                #cursor.execute("INSERT INTO {} (irname, postscale, freq, data, format) VALUES (:irname, :postscale, :freq, :data, :format)".format(self.furniture_name.get()),{"irname":name,"postscale":postScale,"freq":38,"data":rawX_str[:-1],"format":"raw"})
                 cursor.execute("UPDATE {} set irname=:irname,postscale=:postscale,freq=:freq,data=:data,format=:format where id = {}".format(self.furniture_name.get(),update_id),{"irname":name,"postscale":postScale,"freq":38,"data":rawX_str[:-1],"format":"raw"})
             else:
                 cursor.execute("INSERT INTO {} (irname, postscale, freq, data, format) VALUES (:irname, :postscale, :freq, :data, :format)".format(self.furniture_name.get()),{"irname":name,"postscale":postScale,"freq":38,"data":rawX_str[:-1],"format":"raw"})
-                #cursor.execute("INSERT INTO sample(irname, postscale, freq, data, format) VALUES (:irname, :postscale, :freq, :data, :format)",{"irname":name,"postscale":postScale,"freq":38,"data":rawX_str[:-1],"format":"raw"})
         except sqlite3.Error as e:
             print("sqlite3.Error occured:",e.args[0])
         
@@ -257,11 +235,6 @@ class InfraredSignalRegisterFrame(tk.Frame):
         res = messagebox.showinfo("確認","正常に登録されました")
 
 
-    #def serial_close(self):
-    #    print("Reset IR...")
-    #    self.ir_serial.write("r\r\n".encode())
-    #    self.ir_serial.close()
-    #未実装
     def delete(self):
         selected_items = self.tree.selection()
         if not selected_items:
@@ -274,7 +247,6 @@ class InfraredSignalRegisterFrame(tk.Frame):
                 dbpath = "gesture_db.sqlite"
                 connection = sqlite3.connect(dbpath)
                 cursor = connection.cursor()
-                #cursor.execute("DELETE FROM sample WHERE id = "+str(values[0]))
                 cursor.execute("DELETE FROM {} WHERE id = {}".format(self.furniture_name.get(),str(values[0])))
                 connection.commit()
                 connection.close()
@@ -282,17 +254,15 @@ class InfraredSignalRegisterFrame(tk.Frame):
             messagebox.showinfo("確認","正常に削除されました")
             self.tree_update()
 
-    #未実装
     def tree_update(self):
-        self.tree.delete((*self.tree.get_children()))
+        for del_elem in self.tree.get_children():
+            self.tree.delete(del_elem)
         dbpath = "gesture_db.sqlite"
         connection = sqlite3.connect(dbpath)
         cursor = connection.cursor()
         for furniture in self.furniture_idx2label.values():
             cursor.execute("CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)".format(furniture))
-        #cursor.execute("CREATE TABLE IF NOT EXISTS sample (id INTEGER PRIMARY KEY, irname TEXT,postscale INTEGER, freq INTEGER, data TEXT,format TEXT,target_id INTEGER)")
         cursor.execute("SELECT id,irname from {} ORDER BY id".format(self.furniture_name.get()))
-        #cursor.execute("SELECT id,irname from sample ORDER BY id")
         res = cursor.fetchall()
         print(res)
         for data in res:
