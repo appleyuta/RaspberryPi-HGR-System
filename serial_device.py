@@ -50,6 +50,7 @@ elif pf == "Linux":
         except Exception as e:
             ir_serial = None
             print(e)
+            break
         if i == 0:
             print("Capturing IR...")
             ir_serial.write("c\r\n".encode())
